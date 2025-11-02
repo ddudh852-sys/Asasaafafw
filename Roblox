@@ -1,0 +1,52 @@
+-- Local Script: Controls the visibility of the Ability Menu
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Player = game.Players.LocalPlayer
+
+-- อ้างอิงวัตถุหลัก
+local ScreenGui = script.Parent
+local ToggleButton = ScreenGui:WaitForChild("ToggleMenu") -- ปุ่มสำหรับเปิด/ปิดเมนู
+local MainFrame = ScreenGui:WaitForChild("MainFrame")     -- ตัวกล่องเมนูหลัก
+
+-- กำหนดสถานะเริ่มต้น
+MainFrame.Visible = false 
+local function toggleMenu()
+    -- สลับสถานะ Visible ของ MainFrame
+    MainFrame.Visible = not MainFrame.Visible
+    
+    -- เปลี่ยนข้อความปุ่ม Toggle
+    if MainFrame.Visible then
+        ToggleButton.Text = "Close Menu"
+    else
+        ToggleButton.Text = "Open Menu"
+    end
+    print("[Menu] Menu visibility toggled.")
+end
+
+-- เชื่อมต่อปุ่มกับฟังก์ชัน
+ToggleButton.MouseButton1Click:Connect(toggleMenu)
+
+-- **ตัวอย่างการจัดการปุ่ม Toggle ภายในเมนู (ใช้เพื่อโชว์การทำงาน)**
+local SpeedToggle = MainFrame:FindFirstChild("SpeedToggle") 
+local isSpeedActive = false
+
+if SpeedToggle and SpeedToggle:IsA("TextButton") then
+    SpeedToggle.Text = "Speed: OFF" -- ตั้งค่าเริ่มต้น
+    
+    local function toggleSpeed()
+        isSpeedActive = not isSpeedActive
+        
+        if isSpeedActive then
+            SpeedToggle.Text = "Speed: ON"
+            SpeedToggle.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- สีเขียว (Active)
+            print("[Ability] Speed Toggled ON")
+        else
+            SpeedToggle.Text = "Speed: OFF"
+            SpeedToggle.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- สีแดง (Inactive)
+            print("[Ability] Speed Toggled OFF")
+        end
+    end
+    
+    SpeedToggle.MouseButton1Click:Connect(toggleSpeed)
+end
+
